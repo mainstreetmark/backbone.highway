@@ -1,8 +1,8 @@
 {
   "name": "backbone.highway",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cruise the highway with backbone!",
-  "main": "lib/backbone.marionette.js",
+  "main": "lib/backbone.highway.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
