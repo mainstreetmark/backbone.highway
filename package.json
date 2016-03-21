@@ -1,0 +1,23 @@
+{
+  "name": "backbone.highway",
+  "version": "1.0.0",
+  "description": "Cruise the highway with backbone!",
+  "main": "lib/backbone.marionette.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krewenki/backbone.highway.git"
+  },
+  "keywords": [
+    "backbone",
+    "highway"
+  ],
+  "author": "Warren Krewenki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/krewenki/backbone.highway/issues"
+  },
+  "homepage": "https://github.com/krewenki/backbone.highway#readme"
+}
