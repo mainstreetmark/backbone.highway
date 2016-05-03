@@ -1,7 +1,5 @@
 language: node_js
 node_js:
-- '0.10'
-- '0.12'
 - stable
 sudo: false
 install:
@@ -9,5 +7,3 @@ install:
 - npm install
 script:
 - npm test
-after_script:
-- cat ./test/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
