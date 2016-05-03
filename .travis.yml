@@ -5,6 +5,7 @@ node_js:
 - stable
 sudo: false
 install:
+- npm install -g mocha
 - npm install
 script:
 - npm test
