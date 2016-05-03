@@ -1,5 +1,7 @@
 # backbone.highway
 
+[![Coverage Status](https://coveralls.io/repos/github/krewenki/backbone.highway/badge.svg?branch=master)](https://coveralls.io/github/krewenki/backbone.highway?branch=master)
+
 A backbone plugin for use with [Highway](https://github.com/krewenki/highway) to provide realtime updates to models and collections.
 
 To use, have a Highway server running somewhere, and create a new collection:
