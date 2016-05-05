@@ -22,14 +22,13 @@ describe( 'Backbone.Highway.Collection', function () {
 			.to.be.ok;
 	} );
 
-	it( 'should extend construct', function () {
-		var Collection = window.Backbone.Highway.Collection.extend( {
-			io: window.io,
-			url: 'Mock://'
-		} );
-		return expect( new Collection() )
-			.to.be.ok;
-	} );
+	/*	it( 'should extend construct', function () {
+			var Collection = window.Backbone.Highway.Collection.extend( {
+				url: 'Mock://'
+			} );
+			return expect( new Collection() )
+				.to.be.ok;
+		} );*/
 
 	// throw err
 	/*	it( 'should throw an error if an invalid url is provided', function () {
