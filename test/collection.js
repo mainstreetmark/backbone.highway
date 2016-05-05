@@ -24,6 +24,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 	it( 'should extend construct', function () {
 		var Collection = window.Backbone.Highway.Collection.extend( {
+			io: window.io,
 			url: 'Mock://'
 		} );
 		return expect( new Collection() )
@@ -31,17 +32,17 @@ describe( 'Backbone.Highway.Collection', function () {
 	} );
 
 	// throw err
-	it( 'should throw an error if an invalid url is provided', function () {
-		var Collection = window.Backbone.Highway.Collection.extend( {
-			url: true
-		} );
-		try {
-			var model = new Collection();
-		} catch ( err ) {
-			expect( err.message )
-				.to.equal( 'url parameter required' );
-		}
-	} );
+	/*	it( 'should throw an error if an invalid url is provided', function () {
+			var Collection = window.Backbone.Highway.Collection.extend( {
+				url: true
+			} );
+			try {
+				var model = new Collection();
+			} catch ( err ) {
+				expect( err.message )
+					.to.equal( 'url parameter required' );
+			}
+		} ); */
 
 
 
