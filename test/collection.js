@@ -37,7 +37,21 @@ describe( 'Backbone.Highway.Model', function () {
 
 			} );
 
-			model = new Model();
+			model = new Model( {
+				"number": 123,
+				"string": "The quick brown fox jumped over the lazy dog",
+				"array": [ 1, 2, 3, "one", "two", "three", {
+					"prop": true
+				} ],
+				"bool": true,
+				"object": {
+					"level": "one",
+					"nested": {
+						"level": "two",
+						"nullprop": null
+					}
+				}
+			} );
 		} );
 
 		it( 'should exist', function () {
@@ -51,8 +65,39 @@ describe( 'Backbone.Highway.Model', function () {
 		it( 'should return undefined with no arguments', function () {
 			return expect( model.get() )
 				.to.be.a( 'undefined' );
-		} )
-
+		} );
+		it( 'should return a number when prop is a number', function () {
+			return expect( model.get( 'number' ) )
+				.to.be.a( 'number' );
+		} );
+		it( 'should return a string when prop is a string', function () {
+			return expect( model.get( 'string' ) )
+				.to.be.a( 'string' );
+		} );
+		it( 'should return a array when prop is an array', function () {
+			return expect( model.get( 'array' ) )
+				.to.be.a( 'array' );
+		} );
+		it( 'should return a object when prop is an object', function () {
+			return expect( model.get( 'object' ) )
+				.to.be.a( 'object' );
+		} );
+		it( 'should return a prop when prop is nested in an object', function () {
+			return expect( model.get( 'object.level' ) )
+				.to.be( 'one' );
+		} );
+		it( 'should return a prop when prop is nested in objects', function () {
+			return expect( model.get( 'object.nested.level' ) )
+				.to.be( 'two' );
+		} );
+		it( 'should return a prop when prop is nested in objects', function () {
+			return expect( model.get( 'object.nested.nullprop' ) )
+				.to.be( null );
+		} );
+		it( 'should return undefined when prop is nested but undefined', function () {
+			return expect( model.get( 'object.nested.notaprop' ) )
+				.to.be( undefined );
+		} );
 	} );
 } );
 
