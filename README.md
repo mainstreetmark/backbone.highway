@@ -47,4 +47,6 @@ var User = new Backbone.Highway.Model.extend({
     name: 'Steve'
   }
 });
+
+var U = new User();
 </pre>
