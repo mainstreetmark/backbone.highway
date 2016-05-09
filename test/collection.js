@@ -8,6 +8,54 @@ var io = window.io = require( 'socket.io-client' );
 
 require( '../lib/backbone.highway.js' );
 
+describe( 'Backbone.Highway.Model', function () {
+	it( 'should exist', function () {
+		return expect( window.Backbone.Highway.Model )
+			.to.be.ok;
+	} );
+
+	it( 'should extend', function () {
+		var Model = window.Backbone.Highway.Model.extend( {
+
+		} );
+		return expect( Model )
+			.to.be.ok;
+	} );
+	it( 'should extend construct', function () {
+		var Model = window.Backbone.Highway.Model.extend( {
+
+		} );
+		return expect( new Model() )
+			.to.be.ok;
+	} );
+
+	describe( '#get', function () {
+		var collection;
+		var model = {};
+		beforeEach( function () {
+			var Model = window.Backbone.Highway.Model.extend( {
+
+			} );
+
+			model = new Model();
+		} );
+
+		it( 'should exist', function () {
+			return expect( model.get )
+				.to.be.ok;
+		} );
+		it( 'should be a method', function () {
+			return expect( model.get )
+				.to.be.a( 'function' );
+		} );
+		it( 'should return undefined with no arguments', function () {
+			return expect( model.get() )
+				.to.be.a( 'undefined' );
+		} )
+
+	} );
+} );
+
 describe( 'Backbone.Highway.Collection', function () {
 
 	it( 'should exist', function () {
@@ -560,8 +608,6 @@ describe( 'Backbone.Highway.Collection', function () {
 				window.Backbone.Collection.prototype.add.restore();
 			} );
 		} );
-
-
 
 	} );
 
