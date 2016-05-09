@@ -97,6 +97,117 @@ describe( 'Backbone.Highway.Model', function () {
 			return expect( model.get( 'object.nested.notaprop' ) )
 				.to.be( undefined );
 		} );
+		it( 'should return a new array instead of a reference to an array', function () {
+			return expect( model.get( 'array' ) !== model.attributes.array )
+				.to.be( true );
+		} );
+	} );
+
+	describe( '#set', function () {
+		var collection;
+		var model = {};
+		beforeEach( function () {
+			var Model = window.Backbone.Highway.Model.extend( {
+
+			} );
+
+			model = new Model( {
+				"number": 123,
+				"string": "The quick brown fox jumped over the lazy dog",
+				"array": [ 1, 2, 3, "one", "two", "three", {
+					"prop": true
+				} ],
+				"bool": true,
+				"object": {
+					"level": "one",
+					"nested": {
+						"level": "two",
+						"nullprop": null
+					}
+				}
+			} );
+		} );
+
+		it( 'should exist', function () {
+			return expect( model.set )
+				.to.be.ok;
+		} );
+		it( 'should be a method', function () {
+			return expect( model.set )
+				.to.be.a( 'function' );
+		} );
+		it( 'should return model with no arguments', function () {
+			return expect( model.set() )
+				.to.be.ok;
+		} );
+	} );
+
+	describe( '#destroy', function () {
+		var collection;
+		var model = {};
+		beforeEach( function () {
+			var Model = window.Backbone.Highway.Model.extend( {
+
+			} );
+
+			model = new Model( {
+				"number": 123,
+				"string": "The quick brown fox jumped over the lazy dog",
+				"array": [ 1, 2, 3, "one", "two", "three", {
+					"prop": true
+				} ],
+				"bool": true,
+				"object": {
+					"level": "one",
+					"nested": {
+						"level": "two",
+						"nullprop": null
+					}
+				}
+			} );
+		} );
+		it( 'should exist', function () {
+			return expect( model.destroy )
+				.to.be.ok;
+		} );
+		it( 'should be a method', function () {
+			return expect( model.destroy )
+				.to.be.a( 'function' );
+		} );
+	} );
+
+	describe( '#sync', function () {
+		var collection;
+		var model = {};
+		beforeEach( function () {
+			var Model = window.Backbone.Highway.Model.extend( {
+
+			} );
+
+			model = new Model( {
+				"number": 123,
+				"string": "The quick brown fox jumped over the lazy dog",
+				"array": [ 1, 2, 3, "one", "two", "three", {
+					"prop": true
+				} ],
+				"bool": true,
+				"object": {
+					"level": "one",
+					"nested": {
+						"level": "two",
+						"nullprop": null
+					}
+				}
+			} );
+		} );
+		it( 'should exist', function () {
+			return expect( model.sync )
+				.to.be.ok;
+		} );
+		it( 'should be a method', function () {
+			return expect( model.sync )
+				.to.be.a( 'function' );
+		} );
 	} );
 } );
 
