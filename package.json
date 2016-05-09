@@ -5,15 +5,19 @@
   "main": "lib/backbone.highway.js",
   "scripts": {
     "test": "mocha test",
-    "coverage" : "mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
+    "coverage": "mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js"
   },
-
-      "config": {
-        "blanket": {
-          "pattern": [ "" ],
-          "data-cover-never": [ "node_modules", "test" ]
-        }
-      },
+  "config": {
+    "blanket": {
+      "pattern": [
+        ""
+      ],
+      "data-cover-never": [
+        "node_modules",
+        "test"
+      ]
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/krewenki/backbone.highway.git"
@@ -36,6 +40,7 @@
     "jsdom": "8.5.0",
     "jsdom-global": "1.7.0",
     "mocha-lcov-reporter": "^1.2.0",
+    "sinon": "^1.17.4",
     "socket.io-client": "^1.4.6",
     "underscore": "^1.8.3"
   }
