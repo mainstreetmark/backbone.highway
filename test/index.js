@@ -1,9 +1,8 @@
-require( 'jsdom-global' )();
 var sinon = require( 'sinon' );
-
 var expect = require( 'expect.js' );
-window.Backbone = require( 'backbone' );
-window._ = require( 'underscore' );
+require( 'jsdom-global' )();
+var Backbone = window.Backbone = require( 'backbone' );
+var _ = window._ = require( 'underscore' );
 var io = window.io = require( 'socket.io-client' );
 
 require( '../lib/backbone.highway.js' );
