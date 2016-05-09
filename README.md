@@ -7,10 +7,12 @@ A backbone plugin for use with [Highway](https://github.com/krewenki/highway) to
 
 To use, have a Highway server running somewhere, and create a new collection:
 
+
+Collections
+===
 <pre>
 var Items = new Backbone.Highway.Collection.extend({
-    url: '/database/collection',
-    io: <your socket.io object>
+    url: 'url.to.your/database/collection'
 })
 </pre>
 
@@ -21,14 +23,28 @@ Create
 Items.create(newItemModel);
 </pre>
 
+Read
 <pre>
 Items.where()
 </pre>
 
+Update
 <pre>
 Items.models[0].set({ attribute: value })
 </pre>
 
+Destroy
 <pre>
 Items.models[0].remove()
+</pre>
+
+Models
+===
+
+<pre>
+var User = new Backbone.Highway.Model.extend({
+  default: {
+    name: 'Steve'
+  }
+});
 </pre>
