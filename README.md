@@ -94,14 +94,32 @@ by using `Collection._filter` which operates the same as `Backbone.Collection.fi
 the exception that it returns a promise instead of an array.
 
 ```javascript
-// example coming
+function LogicAfterFilter(filteredResult){
+  console.log(filteredResult);
+}
+var ItemModel = Backbone.Highway.Model.extend({});
+var ItemsCollection = Backbone.Highway.Collection.extend({
+    url: 'url.to.your/database/collection',
+    model: ItemModel,
+    minimum: {
+      limit: 20,
+      skip: 10,
+      search: {
+        name: 'Soap'
+      }
+    }
+});
+var Items = new ItemsCollection();
+Items._filter(function(item){
+  return item.get('type') == 'soap';
+}).then(LogicAfterFilter);
 ```
 
 
 Models
 ===
 
-<pre>
+```javascript
 var User = new Backbone.Highway.Model.extend({
   default: {
     name: 'Steve'
@@ -109,4 +127,4 @@ var User = new Backbone.Highway.Model.extend({
 });
 
 var U = new User();
-</pre>
+```
