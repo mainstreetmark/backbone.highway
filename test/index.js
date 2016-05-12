@@ -287,6 +287,24 @@ describe( 'Backbone.Highway.Collection', function () {
 		} );
 
 
+		describe( '#_filter', function () {
+
+			var Collection = window.Backbone.Highway.Collection.extend( {
+				url: 'Mock://'
+			} );
+
+			var collection = new Collection();
+
+			it( 'should call _sync when it is a partial collection' );
+			it( 'should not call _sync when it is not a partial collection' );
+
+			it( 'should return a promise', function () {
+				return expect( collection._filter() )
+					.to.be.a( 'object' );
+			} );
+
+		} );
+
 
 		describe( '#create', function () {
 
