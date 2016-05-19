@@ -297,10 +297,7 @@ describe( 'Backbone.Highway.Collection', function () {
 			it( 'should call _sync when it is a partial collection' );
 			it( 'should not call _sync when it is not a partial collection' );
 
-			it( 'should return a promise', function () {
-				return expect( collection._filter() )
-					.to.be.a( 'object' );
-			} );
+			it( 'should return a promise when it is a partial collection' );
 
 		} );
 
