@@ -1,27 +1,26 @@
 var sinon = require( 'sinon' );
 var expect = require( 'expect.js' );
-require( 'jsdom-global' )();
-var Backbone = window.Backbone = require( 'backbone' );
-var _ = window._ = require( 'underscore' );
-var io = window.io = require( 'socket.io-client' );
+global.Backbone = require( 'backbone' );
+global._ = require( 'underscore' );
+global.io = require( 'socket.io-client' );
 
 require( '../lib/backbone.highway.js' );
 
 describe( 'Backbone.Highway.Model', function () {
 	it( 'should exist', function () {
-		return expect( window.Backbone.Highway.Model )
+		return expect( Backbone.Highway.Model )
 			.to.be.ok;
 	} );
 
 	it( 'should extend', function () {
-		var Model = window.Backbone.Highway.Model.extend( {
+		var Model = Backbone.Highway.Model.extend( {
 
 		} );
 		return expect( Model )
 			.to.be.ok;
 	} );
 	it( 'should extend construct', function () {
-		var Model = window.Backbone.Highway.Model.extend( {
+		var Model = Backbone.Highway.Model.extend( {
 
 		} );
 		return expect( new Model() )
@@ -32,7 +31,7 @@ describe( 'Backbone.Highway.Model', function () {
 		var collection;
 		var model = {};
 		beforeEach( function () {
-			var Model = window.Backbone.Highway.Model.extend( {
+			var Model = Backbone.Highway.Model.extend( {
 
 			} );
 
@@ -107,7 +106,7 @@ describe( 'Backbone.Highway.Model', function () {
 		var collection;
 		var model = {};
 		beforeEach( function () {
-			var Model = window.Backbone.Highway.Model.extend( {
+			var Model = Backbone.Highway.Model.extend( {
 
 			} );
 
@@ -146,7 +145,7 @@ describe( 'Backbone.Highway.Model', function () {
 		var collection;
 		var model = {};
 		beforeEach( function () {
-			var Model = window.Backbone.Highway.Model.extend( {
+			var Model = Backbone.Highway.Model.extend( {
 
 			} );
 
@@ -180,7 +179,7 @@ describe( 'Backbone.Highway.Model', function () {
 		var collection;
 		var model = {};
 		beforeEach( function () {
-			var Model = window.Backbone.Highway.Model.extend( {
+			var Model = Backbone.Highway.Model.extend( {
 
 			} );
 
@@ -214,12 +213,12 @@ describe( 'Backbone.Highway.Model', function () {
 describe( 'Backbone.Highway.Collection', function () {
 
 	it( 'should exist', function () {
-		return expect( window.Backbone.Highway.Collection )
+		return expect( Backbone.Highway.Collection )
 			.to.be.ok;
 	} );
 
 	it( 'should extend', function () {
-		var Collection = window.Backbone.Highway.Collection.extend( {
+		var Collection = Backbone.Highway.Collection.extend( {
 			url: 'Mock://'
 		} );
 		return expect( Collection )
@@ -227,9 +226,9 @@ describe( 'Backbone.Highway.Collection', function () {
 	} );
 
 	it( 'should extend construct', function () {
-		var Collection = window.Backbone.Highway.Collection.extend( {
+		var Collection = Backbone.Highway.Collection.extend( {
 			url: 'Mock://',
-			io: window.io
+			io: io
 		} );
 		return expect( new Collection() )
 			.to.be.ok;
@@ -237,7 +236,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 	// throw err
 	it( 'should throw an error if an invalid url is provided', function () {
-		var Collection = window.Backbone.Highway.Collection.extend( {
+		var Collection = Backbone.Highway.Collection.extend( {
 			url: true
 		} );
 		try {
@@ -251,7 +250,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 
 	describe( '#_parseModels()', function () {
-		var Collection = window.Backbone.Highway.Collection.extend( {
+		var Collection = Backbone.Highway.Collection.extend( {
 			url: 'Mock://'
 		} );
 
@@ -276,7 +275,7 @@ describe( 'Backbone.Highway.Collection', function () {
 		var collection;
 
 		it( 'should enable autoSync by default', function () {
-			var Model = window.Backbone.Highway.Collection.extend( {
+			var Model = Backbone.Highway.Collection.extend( {
 				url: 'Mock://'
 			} );
 
@@ -289,7 +288,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 		describe( '#_filter', function () {
 
-			var Collection = window.Backbone.Highway.Collection.extend( {
+			var Collection = Backbone.Highway.Collection.extend( {
 				url: 'Mock://'
 			} );
 
@@ -308,7 +307,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 		describe( '#create', function () {
 
-			var Collection = window.Backbone.Highway.Collection.extend( {
+			var Collection = Backbone.Highway.Collection.extend( {
 				url: 'Mock://'
 			} );
 
@@ -357,7 +356,7 @@ describe( 'Backbone.Highway.Collection', function () {
 		describe( '#remove', function () {
 
 
-			var Collection = window.Backbone.Highway.Collection.extend( {
+			var Collection = Backbone.Highway.Collection.extend( {
 				url: 'Mock://'
 			} );
 
@@ -382,7 +381,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 		describe( '#reset', function () {
 
-			var Collection = window.Backbone.Highway.Collection.extend( {
+			var Collection = Backbone.Highway.Collection.extend( {
 				url: 'Mock://'
 			} );
 
@@ -450,7 +449,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 		describe( '#_log', function () {
 
-			var Collection = window.Backbone.Highway.Collection.extend( {
+			var Collection = Backbone.Highway.Collection.extend( {
 				url: 'Mock://'
 			} );
 
@@ -476,7 +475,7 @@ describe( 'Backbone.Highway.Collection', function () {
 			var collection;
 			var model = {};
 			beforeEach( function () {
-				var Collection = window.Backbone.Highway.Collection.extend( {
+				var Collection = Backbone.Highway.Collection.extend( {
 					url: 'Mock://',
 					autoSync: true
 				} );
@@ -506,16 +505,16 @@ describe( 'Backbone.Highway.Collection', function () {
 
 			var collection;
 			beforeEach( function () {
-				var Collection = window.Backbone.Highway.Collection.extend( {
+				var Collection = Backbone.Highway.Collection.extend( {
 					url: 'Mock://',
-					idAttribute: window.Backbone.Model.prototype.idAttribute,
+					idAttribute: Backbone.Model.prototype.idAttribute,
 					autoSync: true
 				} );
 
 				collection = new Collection();
 
 				collection.models = [
-					new window.Backbone.Model( {
+					new Backbone.Model( {
 						id: '1',
 						name: 'David',
 						age: 26
@@ -581,7 +580,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 			var collection;
 			beforeEach( function () {
-				var Collection = window.Backbone.Highway.Collection.extend( {
+				var Collection = Backbone.Highway.Collection.extend( {
 					url: 'Mock://',
 					autoSync: true
 				} );
@@ -589,7 +588,7 @@ describe( 'Backbone.Highway.Collection', function () {
 				collection = new Collection();
 
 				collection.models = [
-					new window.Backbone.Model( {
+					new Backbone.Model( {
 						id: '1',
 						name: 'David',
 						age: 26
@@ -599,7 +598,7 @@ describe( 'Backbone.Highway.Collection', function () {
 			} );
 
 			it( 'should call Backbone.Collection.remove', function () {
-				sinon.spy( window.Backbone.Collection.prototype, 'remove' );
+				sinon.spy( Backbone.Collection.prototype, 'remove' );
 
 				var mockSnap = {
 					id: '1',
@@ -609,14 +608,14 @@ describe( 'Backbone.Highway.Collection', function () {
 
 				collection._childRemoved( mockSnap );
 
-				expect( window.Backbone.Collection.prototype.remove.calledOnce )
+				expect( Backbone.Collection.prototype.remove.calledOnce )
 					.to.be.ok;
-				window.Backbone.Collection.prototype.remove.restore();
+				Backbone.Collection.prototype.remove.restore();
 			} );
 
 			// silent remove
 			it( 'should call Backbone.Collection.remove silently', function () {
-				sinon.spy( window.Backbone.Collection.prototype, 'remove' );
+				sinon.spy( Backbone.Collection.prototype, 'remove' );
 
 				var mockSnap = {
 					id: '1',
@@ -627,10 +626,10 @@ describe( 'Backbone.Highway.Collection', function () {
 				collection._suppressEvent = true;
 				collection._childRemoved( mockSnap );
 
-				expect( window.Backbone.Collection.prototype.remove.calledWith( {
+				expect( Backbone.Collection.prototype.remove.calledWith( {
 					silent: true
 				} ) );
-				window.Backbone.Collection.prototype.remove.restore();
+				Backbone.Collection.prototype.remove.restore();
 			} );
 
 		} );
@@ -639,7 +638,7 @@ describe( 'Backbone.Highway.Collection', function () {
 
 			var collection;
 			beforeEach( function () {
-				var Collection = window.Backbone.Highway.Collection.extend( {
+				var Collection = Backbone.Highway.Collection.extend( {
 					url: 'Mock://',
 					autoSync: true
 				} );
@@ -647,7 +646,7 @@ describe( 'Backbone.Highway.Collection', function () {
 				collection = new Collection();
 
 				collection.models = [
-					new window.Backbone.Model( {
+					new Backbone.Model( {
 						id: '1',
 						name: 'David',
 						age: 26
@@ -657,7 +656,7 @@ describe( 'Backbone.Highway.Collection', function () {
 			} );
 
 			it( 'should call Backbone.Collection.add', function () {
-				sinon.spy( window.Backbone.Collection.prototype, 'add' );
+				sinon.spy( Backbone.Collection.prototype, 'add' );
 
 				var mockSnap = {
 					id: '1',
@@ -667,14 +666,14 @@ describe( 'Backbone.Highway.Collection', function () {
 
 				collection._childAdded( mockSnap );
 
-				expect( window.Backbone.Collection.prototype.add.calledOnce )
+				expect( Backbone.Collection.prototype.add.calledOnce )
 					.to.be.ok;
-				window.Backbone.Collection.prototype.add.restore();
+				Backbone.Collection.prototype.add.restore();
 			} );
 
 			// silent add
 			it( 'should call Backbone.Collection.add silently', function () {
-				sinon.spy( window.Backbone.Collection.prototype, 'add' );
+				sinon.spy( Backbone.Collection.prototype, 'add' );
 				var mockSnap = {
 					id: '1',
 					name: 'David',
@@ -684,10 +683,10 @@ describe( 'Backbone.Highway.Collection', function () {
 				collection._suppressEvent = true;
 				collection._childAdded( mockSnap );
 
-				expect( window.Backbone.Collection.prototype.add.calledWith( {
+				expect( Backbone.Collection.prototype.add.calledWith( {
 					silent: true
 				} ) );
-				window.Backbone.Collection.prototype.add.restore();
+				Backbone.Collection.prototype.add.restore();
 			} );
 
 		} );
@@ -698,21 +697,21 @@ describe( 'Backbone.Highway.Collection', function () {
 			var model;
 			beforeEach( function () {
 
-				var Collection = window.Backbone.Highway.Collection.extend( {
+				var Collection = Backbone.Highway.Collection.extend( {
 					url: 'Mock://'
 				} );
 
 				collection = new Collection();
 
 				collection.models = [
-					new window.Backbone.Model( {
+					new Backbone.Model( {
 						id: '1',
 						name: 'David',
 						age: 26
 					} )
 				];
 
-				model = new window.Backbone.Model( {
+				model = new Backbone.Model( {
 					id: "1",
 					name: 'Kato',
 					age: 26
@@ -749,21 +748,21 @@ describe( 'Backbone.Highway.Collection', function () {
 			var model;
 			beforeEach( function () {
 
-				var Collection = window.Backbone.Highway.Collection.extend( {
+				var Collection = Backbone.Highway.Collection.extend( {
 					url: 'Mock://'
 				} );
 
 				collection = new Collection();
 
 				collection.models = [
-					new window.Backbone.Model( {
+					new Backbone.Model( {
 						id: '1',
 						name: 'David',
 						age: 26
 					} )
 				];
 
-				model = new window.Backbone.Model( {
+				model = new Backbone.Model( {
 					id: "1",
 					name: 'Kato',
 					age: 26
@@ -771,14 +770,14 @@ describe( 'Backbone.Highway.Collection', function () {
 
 			} );
 			it( 'should call Backbone.Collection.prototype.add', function () {
-				sinon.spy( window.Backbone.Collection.prototype, 'add' );
+				sinon.spy( Backbone.Collection.prototype, 'add' );
 
 				collection.add( {} );
 
-				expect( window.Backbone.Collection.prototype.add.calledOnce )
+				expect( Backbone.Collection.prototype.add.calledOnce )
 					.to.be.ok;
 
-				window.Backbone.Collection.prototype.add.restore();
+				Backbone.Collection.prototype.add.restore();
 			} );
 		} );
 
