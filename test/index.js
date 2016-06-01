@@ -288,15 +288,50 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#_filter', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
-				url: 'Mock://'
+				url: 'Mock://',
+			});
+			var PartialCollection = Backbone.Highway.Collection.extend({
+				url: 'Mock://',
+				minimum: {
+					limit: 5
+				}
 			});
 
 			var collection = new Collection();
+			var partialcollection = new PartialCollection();
 
-			it('should call _sync when it is a partial collection');
-			it('should not call _sync when it is not a partial collection');
+			it('should call _search when it is a partial collection', function () {
+				sinon.spy(partialcollection, '_search');
 
-			it('should return a promise when it is a partial collection');
+				partialcollection._filter({
+					id: '1'
+				});
+
+				expect(partialcollection._search.calledOnce)
+					.to.be.ok;
+
+				partialcollection._search.restore();
+			});
+			it('should not call _search when it is not a partial collection', function () {
+				sinon.spy(collection, '_search');
+
+				collection._filter({
+					id: '1'
+				});
+
+				expect(collection._search.calledOnce)
+					.to.not.be.ok;
+
+				collection._search.restore();
+			});
+
+			it('should return a promise', function () {
+				var ret = partialcollection._filter({
+					id: '1'
+				})
+				expect(ret)
+					.to.be.a('object')
+			});
 
 		});
 
