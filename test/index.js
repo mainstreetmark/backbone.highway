@@ -328,9 +328,9 @@ describe('Backbone.Highway.Collection', function () {
 			it('should return a promise', function () {
 				var ret = partialcollection._filter({
 					id: '1'
-				})
+				});
 				expect(ret)
-					.to.be.a('object')
+					.to.be.a('object');
 			});
 
 		});
@@ -377,6 +377,56 @@ describe('Backbone.Highway.Collection', function () {
 			// return false for no model
 			it('should return false when no model is provided', function () {
 				var expectFalse = collection.create();
+				expect(expectFalse)
+					.to.be.false;
+			});
+
+		});
+
+		describe('#_create', function () {
+
+			var Collection = Backbone.Highway.Collection.extend({
+				url: 'Mock://',
+				minimum: {
+					limit: 1
+				}
+			});
+
+			var collection = new Collection();
+
+
+			// ignore wait
+			it('should ignore options.wait', function () {
+				sinon.spy(collection, '_log');
+				collection._create({
+					firstname: 'David'
+				}, {
+					wait: function () {}
+				});
+
+				expect(collection._log.calledOnce)
+					.to.be.ok;
+
+				collection._log.restore();
+			});
+
+			// call SyncCollection.add
+			it('should call SyncCollection.add', function () {
+				sinon.spy(collection, 'add');
+
+				collection._create({
+					firstname: 'David'
+				});
+
+				expect(collection.add.calledOnce)
+					.to.be.true;
+
+				collection.add.restore();
+			});
+
+			// return false for no model
+			it('should return false when no model is provided', function () {
+				var expectFalse = collection._create();
 				expect(expectFalse)
 					.to.be.false;
 			});
