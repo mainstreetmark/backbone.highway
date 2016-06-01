@@ -34,7 +34,6 @@
   "homepage": "https://github.com/krewenki/backbone.highway#readme",
   "dependencies": {},
   "devDependencies": {
-    "backbone": "^1.3.3",
     "blanket": "1.1.9",
     "coveralls": "^2.11.9",
     "expect.js": "^0.3.1",
