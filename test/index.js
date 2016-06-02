@@ -26,6 +26,22 @@ describe('Backbone.Highway.Model', function () {
 			.to.be.ok;
 	});
 
+	describe('#save', function () {
+		it('should exist');
+		it('should be a method');
+		it('should generate a console warning');
+		it('should call #set with the arguments it was provided');
+	});
+
+	describe('#set', function () {
+		it('should exist');
+		it('should be a method');
+		it('should return false when no arguments are passed');
+		it('should call _setRecursive when passed a nested string as key (i.e. obj1.obj2.key)');
+		it('should call Backbone.Model.set()');
+
+	});
+
 	describe('#get', function () {
 		var collection;
 		var model = {};
