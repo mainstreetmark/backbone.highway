@@ -93,10 +93,51 @@ describe('Backbone.Highway.Model', function () {
 	});
 
 	describe('#set', function () {
-		it('should exist');
-		it('should be a method');
-		it('should return false when no arguments are passed');
-		it('should call _setRecursive when passed a nested string as key (i.e. obj1.obj2.key)');
+		var collection;
+		var model = {};
+		beforeEach(function () {
+			var Model = Backbone.Highway.Model.extend({
+
+			});
+
+			model = new Model({
+				"number": 123,
+				"string": "The quick brown fox jumped over the lazy dog",
+				"array": [1, 2, 3, "one", "two", "three", {
+					"prop": true
+				}],
+				"bool": true,
+				"object": {
+					"level": "one",
+					"nested": {
+						"level": "two",
+						"nullprop": null
+					}
+				}
+			});
+		});
+		it('should exist', function () {
+			expect(model.set)
+				.to.be.ok;
+		});
+		it('should be a method', function () {
+			expect(model.set)
+				.to.be.a('function');
+		});
+		it('should return when no arguments are passed', function () {
+			expect(model.set())
+				.to.be.a('undefined');
+		});
+		it('should call _setRecursive when passed a nested string as key (i.e. obj1.obj2.key)', function () {
+			sinon.spy(model, '_setRecursive');
+
+			model.set('my.name.is', "Dave");
+
+			expect(model._setRecursive.called)
+				.to.be.ok;
+
+			model._setRecursive.restore();
+		});
 		it('should call Backbone.Model.set()');
 
 	});
