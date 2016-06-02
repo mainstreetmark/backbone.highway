@@ -27,10 +27,69 @@ describe('Backbone.Highway.Model', function () {
 	});
 
 	describe('#save', function () {
-		it('should exist');
-		it('should be a method');
-		it('should generate a console warning');
-		it('should call #set with the arguments it was provided');
+		var collection;
+		var model = {};
+		beforeEach(function () {
+			var Model = Backbone.Highway.Model.extend({
+
+			});
+
+			model = new Model({
+				"number": 123,
+				"string": "The quick brown fox jumped over the lazy dog",
+				"array": [1, 2, 3, "one", "two", "three", {
+					"prop": true
+				}],
+				"bool": true,
+				"object": {
+					"level": "one",
+					"nested": {
+						"level": "two",
+						"nullprop": null
+					}
+				}
+			});
+		});
+		it('should exist', function () {
+			expect(model.save)
+				.to.be.ok;
+		});
+		it('should be a method', function () {
+			expect(model.save)
+				.to.be.a('function');
+		});
+		it('should generate a console warning', function () {
+			sinon.spy(console, 'warn');
+
+			model.save({
+				"name": "Dave"
+			});
+
+			expect(console.warn.calledOnce)
+				.to.be.ok;
+
+			console.warn.restore();
+		});
+		it('should call #set with the arguments it was provided', function () {
+			sinon.spy(model, 'set');
+
+			model.save({
+				"name": "Dave"
+			});
+
+			expect(model.set.calledOnce)
+				.to.be.ok;
+
+			model.set.restore();
+		});
+		it('should call #set and apply the arguments properly', function () {
+			model.save({
+				"name": "Dave"
+			});
+
+			expect(model.get('name'))
+				.to.be('Dave');
+		});
 	});
 
 	describe('#set', function () {
