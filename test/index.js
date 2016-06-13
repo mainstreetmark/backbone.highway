@@ -451,7 +451,6 @@ describe('Backbone.Highway.Collection', function () {
 
 		});
 
-
 		describe('#create', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
@@ -980,6 +979,14 @@ describe('Backbone.Highway.Collection', function () {
 				collection.add(model);
 				expect(collection.length)
 					.to.equal(2);
+			});
+			it('should modify existing model when adding', function () {
+				var original_cid = model.cid;
+				collection.add(model);
+				var new_cid = collection.at(collection.length - 1)
+					.cid;
+				expect(original_cid)
+					.to.equal(new_cid);
 			});
 		});
 
