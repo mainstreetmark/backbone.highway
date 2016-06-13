@@ -151,7 +151,7 @@ describe('Backbone.Highway.Model', function () {
 			model.set('darth', 'Lukes Dad');
 			expect(model._setRecursive.called)
 				.to.not.be.ok;
-			sinon.restore(model._setRecursive);
+			model._setRecursive.restore();
 		});
 		it('should call Backbone.Model.prototype.set() after generating the object to save', function () {
 			sinon.spy(Backbone.Model.prototype, 'set');
@@ -159,7 +159,7 @@ describe('Backbone.Highway.Model', function () {
 			model.set('darth', 'Lukes Dad');
 			expect(Backbone.Model.prototype.set.called)
 				.to.be.ok;
-			sinon.restore(Backbone.Model.prototype.set);
+			Backbone.Model.prototype.set.restore();
 		});
 
 	});
