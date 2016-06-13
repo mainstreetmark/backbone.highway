@@ -385,28 +385,6 @@ describe('Backbone.Highway.Collection', function () {
 	});
 
 
-
-	describe('#_parseModels()', function () {
-		var Collection = Backbone.Highway.Collection.extend({
-			url: 'Mock://'
-		});
-
-		var collection = new Collection();
-
-		/*it( 'should be a method', function () {
-			return expect( collection )
-				.to.have.property( '_parseModels' )
-				.and.be.a( 'function' );
-		} );*/
-
-		it('should return an empty array when called without parameters', function () {
-			var result = collection._parseModels();
-			return expect(result)
-				.to.eql([]);
-		});
-
-	});
-
 	describe('SyncCollection', function () {
 
 		var collection;

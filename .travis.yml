@@ -17,6 +17,9 @@ install:
 - npm install -g backbone
 - npm install -g socket.io-client
 - npm install
+before_script:
+  - sleep 30
+  - mongo highway --eval 'db.createCollection("users");'
 script:
 - npm test
 - npm run coverage
