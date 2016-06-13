@@ -982,21 +982,26 @@ describe('Backbone.Highway.Collection', function () {
 
 
 				model = new Backbone.Model({
-					id: "1",
+					id: "2",
 					name: 'Kato',
 					age: 26
 				});
 
 			});
 			it('should call Backbone.Collection.prototype.add', function () {
-				sinon.spy(Backbone.Collection.prototype, 'add');
+				sinon.spy(Backbone.Collection.prototype, 'create');
 
 				collection.add(model);
 
-				expect(Backbone.Collection.prototype.add.calledOnce)
+				expect(Backbone.Collection.prototype.create.calledOnce)
 					.to.be.ok;
 
-				Backbone.Collection.prototype.add.restore();
+				Backbone.Collection.prototype.create.restore();
+			});
+			it('should increase the length of the collection', function () {
+				collection.add(model);
+				expect(collection.length)
+					.to.equal(2);
 			});
 		});
 
