@@ -138,7 +138,29 @@ describe('Backbone.Highway.Model', function () {
 
 			model._setRecursive.restore();
 		});
-		it('should call Backbone.Model.set()');
+		it('should create objects if they dont exist', function () {
+			expect(model.get('darth.vader'))
+				.to.be.a('undefined');
+			model.set('darth.vader', 'Lukes Dad');
+			expect(model.get('darth.vader'))
+				.to.be('Lukes Dad')
+		});
+		it('should bypass _setRecursive if the property isnt an object', function () {
+			sinon.spy(model, '_setRecursive');
+
+			model.set('darth', 'Lukes Dad');
+			expect(model._setRecursive.called)
+				.to.not.be.ok;
+			sinon.restore(model._setRecursive);
+		});
+		it('should call Backbone.Model.prototype.set() after generating the object to save', function () {
+			sinon.spy(Backbone.Model.prototype, 'set');
+
+			model.set('darth', 'Lukes Dad');
+			expect(Backbone.Model.prototype.set.called)
+				.to.be.ok;
+			sinon.restore(Backbone.Model.prototype.set);
+		});
 
 	});
 
@@ -941,22 +963,23 @@ describe('Backbone.Highway.Collection', function () {
 
 		describe('#add', function () {
 			var collection;
-			var model;
+			var model, models;
 			beforeEach(function () {
 
 				var Collection = Backbone.Highway.Collection.extend({
 					url: 'Mock://'
 				});
 
-				collection = new Collection();
-
-				collection.models = [
+				models = [
 					new Backbone.Model({
 						id: '1',
 						name: 'David',
 						age: 26
 					})
 				];
+
+				collection = new Collection(models);
+
 
 				model = new Backbone.Model({
 					id: "1",
@@ -968,7 +991,7 @@ describe('Backbone.Highway.Collection', function () {
 			it('should call Backbone.Collection.prototype.add', function () {
 				sinon.spy(Backbone.Collection.prototype, 'add');
 
-				collection.add({});
+				collection.add(model);
 
 				expect(Backbone.Collection.prototype.add.calledOnce)
 					.to.be.ok;
