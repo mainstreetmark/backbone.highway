@@ -407,6 +407,14 @@ describe('Backbone.Highway.Collection', function () {
 		});
 
 
+		describe('#add', function () {
+			it('should call Backbone.Collection.prototype.add', function () {
+
+			});
+			it('should increase collection length by 1');
+			it('should trigger the add event');
+		});
+
 		describe('#_filter', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
@@ -482,7 +490,7 @@ describe('Backbone.Highway.Collection', function () {
 			});
 
 			// call SyncCollection.add
-			it('should call SyncCollection.add', function () {
+			it('should call SyncCollection.add once', function () {
 				sinon.spy(collection, 'add');
 
 				collection.create({
@@ -509,8 +517,20 @@ describe('Backbone.Highway.Collection', function () {
 				setTimeout(function () {
 					expect(model.get('_id')).to.be.ok;
 					done();
-				}, 1500);
+				}, 1000);
 			});
+
+			it('should eventually increase collection.length by 1', function (done) {
+				var original_length = collection.length;
+				var model = collection.create({
+					'name': 'Steve'
+				});
+				setTimeout(function () {
+					expect(collection.length).to.equal(original_length + 1);
+					done();
+				}, 1000);
+			});
+
 
 		});
 

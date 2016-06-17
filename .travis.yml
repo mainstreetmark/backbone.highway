@@ -16,6 +16,7 @@ install:
 - npm install -g mocha
 - npm install -g backbone
 - npm install -g socket.io-client
+- npm install -g git+https://github.com/krewenki/highway
 - npm install
 before_script:
   - sleep 30
