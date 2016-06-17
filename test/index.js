@@ -1,5 +1,11 @@
 var sinon = require('sinon');
 var expect = require('expect.js');
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.should();
+chai.use(chaiAsPromised);
+
+
 global.Backbone = require('backbone');
 global._ = require('underscore');
 global.io = require('socket.io-client');
@@ -496,6 +502,16 @@ describe('Backbone.Highway.Collection', function () {
 					.to.be.false;
 			});
 
+			it('should eventually have an _id set', function (done) {
+				var model = collection.create({
+					'name': 'Steve'
+				});
+				setTimeout(function () {
+					expect(model.get('_id')).to.be.ok;
+					done();
+				}, 1500);
+			});
+
 		});
 
 		describe('#_create', function () {
@@ -540,10 +556,9 @@ describe('Backbone.Highway.Collection', function () {
 			});
 
 			// return false for no model
-			it('should return false when no model is provided', function () {
+			it('should return a rejected promise when no model is provided', function (done) {
 				var expectFalse = collection._create();
-				expect(expectFalse)
-					.to.be.false;
+				expectFalse.should.eventually.be.rejected.notify(done);
 			});
 
 		});
