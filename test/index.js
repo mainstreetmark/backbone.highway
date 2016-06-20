@@ -398,8 +398,23 @@ describe('Backbone.Highway.Model', function () {
 			return expect(model.sync)
 				.to.be.a('function');
 		});
-		it('should return true');
-		it('should trigger a collection sync event, if a collection exists');
+		it('should return true', function () {
+			expect(model.sync()).to.be.true;
+		});
+		it('should trigger a collection sync event, if a collection exists', function () {
+			var c = Backbone.Collection.extend({});
+			var collection = new c();
+			collection.add(model);
+			var sync = false;
+			collection.on('sync', function () {
+				sync = true;
+			});
+			model.sync();
+
+			expect(sync).to.be.true;
+
+
+		});
 	});
 });
 
@@ -468,22 +483,34 @@ describe('Backbone.Highway.Collection', function () {
 		});
 
 
-		describe('#add', function () {
-			it('should call Backbone.Collection.prototype.add');
-			it('should increase collection length by 1');
-			it('should trigger the add event');
-		});
 
 		describe('#_search', function () {
-			it('should exist');
-			it('should be a method');
-			it('should return a promise');
-			it('should resolve if collection isnt partial');
+			var collection, c;
+			beforeEach(function () {
+				collection = Backbone.Highway.Collection.extend({
+					url: '127.0.0.1/highway/users'
+				});
+				c = new collection();
+			});
+			it('should exist', function () {
+				expect(c._search).to.be.ok;
+			});
+			it('should be a method', function () {
+				expect(c._search).to.be.a('function');
+			});
+			it('should return a promise', function () {
+				expect(c._search()).to.be.a('object');
+			});
+			it('should resolve if collection isnt partial', function (done) {
+				c._search().should.eventually.notify(done);
+			});
 			it('should emit a search event if the collection is partial');
 		});
 
 		describe('#_where', function () {
-			it('should exist');
+			it('should exist', function () {
+				//expect(coll)
+			});
 			it('should be a method');
 			it('should return a promise');
 			it('should call _search');
@@ -1083,7 +1110,7 @@ describe('Backbone.Highway.Collection', function () {
 
 				Backbone.Collection.prototype.create.restore();
 			});
-			it('should increase the length of the collection', function () {
+			it('should increase the length of the collection by 1', function () {
 				collection.add(model);
 				expect(collection.length)
 					.to.equal(2);
@@ -1095,6 +1122,14 @@ describe('Backbone.Highway.Collection', function () {
 					.cid;
 				expect(original_cid)
 					.to.equal(new_cid);
+			});
+			it('should trigger the add event', function () {
+				sinon.spy(collection, '_addModel');
+
+				collection.add(model);
+				expect(collection._addModel.calledOnce).to.be.true;
+
+				collection._addModel.restore();
 			});
 		});
 
