@@ -344,8 +344,26 @@ describe('Backbone.Highway.Model', function () {
 			return expect(model.destroy)
 				.to.be.a('function');
 		});
-		it('should call collection.remove if model belongs to a collection');
-		it('should fall back to Backbone.Model.prototype.destroy if it doesnt belong to a collection');
+		it('should call collection.remove if model belongs to a collection', function () {
+
+			var c = Backbone.Collection.extend({});
+			var collection = new c();
+			collection.add(model);
+
+			sinon.spy(collection, 'remove');
+			model.destroy();
+			expect(collection.remove.calledOnce).to.be.true;
+
+			collection.remove.restore();
+		});
+		it('should fall back to Backbone.Model.prototype.destroy if it doesnt belong to a collection', function () {
+			sinon.spy(model, 'destroy');
+
+			model.destroy();
+			expect(model.destroy.calledOnce).to.be.true;
+
+			model.destroy.restore();
+		});
 	});
 
 	describe('#sync', function () {
@@ -592,7 +610,6 @@ describe('Backbone.Highway.Collection', function () {
 				}, 1000);
 			});
 
-
 		});
 
 		describe('#_create', function () {
@@ -623,7 +640,7 @@ describe('Backbone.Highway.Collection', function () {
 			});
 
 			// call SyncCollection.add
-			it('should call SyncCollection.add', function () {
+			it('should call Backbone.Collection.prototype.add', function () {
 				sinon.spy(collection, 'add');
 
 				collection._create({
@@ -1018,11 +1035,6 @@ describe('Backbone.Highway.Collection', function () {
 
 				var collectionModel = collection.models[0];
 
-				// The name property should still be equal to 'David'
-				// because 'model' object had _remoteChanging set to true
-				// which cancels the update. This is because _remoteChanging
-				// indicates that the item is being updated through the
-				// Firebase sync listeners
 				return expect(collectionModel.get('name'))
 					.to.equal('David');
 
