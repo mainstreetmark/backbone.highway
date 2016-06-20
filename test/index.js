@@ -408,9 +408,7 @@ describe('Backbone.Highway.Collection', function () {
 
 
 		describe('#add', function () {
-			it('should call Backbone.Collection.prototype.add', function () {
-
-			});
+			it('should call Backbone.Collection.prototype.add');
 			it('should increase collection length by 1');
 			it('should trigger the add event');
 		});
