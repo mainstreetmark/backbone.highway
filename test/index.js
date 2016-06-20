@@ -12,26 +12,31 @@ global.io = require('socket.io-client');
 require('../lib/backbone.highway.js');
 
 
-var express = require('express');
-var app = express();
 
-var port = 8081;
-var server = app.listen(port, function () {
+
+before(function () {
+	var express = require('express');
+	var app = express();
+
+	var port = 8081;
+	var server = app.listen(port, function () {
+
+	});
+
+	var io = require('socket.io')
+		.listen(server);
+	io.set('origins', 'http://localhost:*');
+
+	var config = {
+		uri: '127.0.0.1',
+		database: 'highway'
+	};
+	config.http = app;
+	config.io = io;
+	var Highway = require('highway');
+	var hw = new Highway(config);
 
 });
-
-var io = require('socket.io')
-	.listen(server);
-io.set('origins', 'http://localhost:*');
-
-var config = {
-	uri: '127.0.0.1',
-	database: 'highway'
-};
-config.http = app;
-config.io = io;
-var Highway = require('highway');
-var hw = new Highway(config);
 
 
 describe('Backbone.Highway.Model', function () {
@@ -339,6 +344,8 @@ describe('Backbone.Highway.Model', function () {
 			return expect(model.destroy)
 				.to.be.a('function');
 		});
+		it('should call collection.remove if model belongs to a collection');
+		it('should fall back to Backbone.Model.prototype.destroy if it doesnt belong to a collection');
 	});
 
 	describe('#sync', function () {
@@ -449,6 +456,24 @@ describe('Backbone.Highway.Collection', function () {
 			it('should trigger the add event');
 		});
 
+		describe('#_search', function () {
+			it('should exist');
+			it('should be a method');
+			it('should return a promise');
+			it('should resolve if collection isnt partial');
+			it('should emit a search event if the collection is partial');
+		});
+
+		describe('#_where', function () {
+			it('should exist');
+			it('should be a method');
+			it('should return a promise');
+			it('should call _search');
+			it('should resolve after _search()');
+			it('should reject if search fails');
+			it('should append fetched results to collection after _search');
+		});
+
 		describe('#_filter', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
@@ -496,6 +521,8 @@ describe('Backbone.Highway.Collection', function () {
 				expect(ret)
 					.to.be.a('object');
 			});
+
+			if ('should append all records to the collection after _search is called');
 
 		});
 
