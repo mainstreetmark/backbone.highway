@@ -14,7 +14,8 @@ require('../lib/backbone.highway.js');
 
 
 
-before(function () {
+before(function (done) {
+	this.timeout(20000);
 	var express = require('express');
 	var app = express();
 
@@ -23,18 +24,27 @@ before(function () {
 
 	});
 
-	var io = require('socket.io')
+	var ioserver = require('socket.io')
 		.listen(server);
-	io.set('origins', 'http://localhost:*');
+	//io.set('origins', 'http://localhost:*');
 
 	var config = {
 		uri: '127.0.0.1',
-		database: 'highway'
+		database: 'highway',
+		auth: [{
+			defaultUser: '56fea5cc54d49c036c802e53',
+			strategy: 'local',
+			sessionLength: 60 * 60 * 24 * 365,
+		}]
 	};
 	config.http = app;
-	config.io = io;
+	config.io = ioserver;
 	var Highway = require('highway');
-	var hw = new Highway(config);
+	var hw = new Highway(config).then(function () {
+		done();
+	}, function (err) {
+		console.log('error: ', err);
+	});
 
 });
 
@@ -428,7 +438,7 @@ describe('Backbone.Highway.Collection', function () {
 
 	it('should extend', function () {
 		var Collection = Backbone.Highway.Collection.extend({
-			url: '127.0.0.1/highway/users'
+			url: 'http://127.0.0.1:8081/highway/users'
 		});
 		return expect(Collection)
 			.to.be.ok;
@@ -436,7 +446,7 @@ describe('Backbone.Highway.Collection', function () {
 
 	it('should extend construct', function () {
 		var Collection = Backbone.Highway.Collection.extend({
-			url: '127.0.0.1/highway/users',
+			url: 'http://127.0.0.1:8081/highway/users',
 			io: io
 		});
 		return expect(new Collection())
@@ -473,7 +483,7 @@ describe('Backbone.Highway.Collection', function () {
 
 		it('should enable autoSync by default', function () {
 			var Model = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users'
+				url: 'http://127.0.0.1:8081/highway/users'
 			});
 
 			var model = new Model();
@@ -488,7 +498,7 @@ describe('Backbone.Highway.Collection', function () {
 			var collection, c;
 			beforeEach(function () {
 				collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users'
+					url: 'http://127.0.0.1:8081/highway/users'
 				});
 				c = new collection();
 			});
@@ -522,10 +532,10 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#_filter', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users',
+				url: 'http://127.0.0.1:8081/highway/users',
 			});
 			var PartialCollection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users',
+				url: 'http://127.0.0.1:8081/highway/users',
 				minimum: {
 					limit: 5
 				}
@@ -574,7 +584,7 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#create', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users'
+				url: 'http://127.0.0.1:8081/highway/users'
 			});
 
 			var collection = new Collection();
@@ -640,15 +650,15 @@ describe('Backbone.Highway.Collection', function () {
 		});
 
 		describe('#_create', function () {
+			var collection, Collection;
+			beforeEach(function () {
+				Collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users'
+				});
 
-			var Collection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users',
-				minimum: {
-					limit: 1
-				}
+				collection = new Collection();
+
 			});
-
-			var collection = new Collection();
 
 
 			// ignore wait
@@ -686,13 +696,33 @@ describe('Backbone.Highway.Collection', function () {
 				expectFalse.should.eventually.be.rejected.notify(done);
 			});
 
+			it('should set _remoteChanging to true while waiting for promise to resolve', function (done) {
+				this.timeout(20000);
+				sinon.spy(collection, '_preventSync');
+
+				collection._create({
+					firstname: 'David'
+				}).then(function () {
+					expect(collection._preventSync.calledWith(false, true)).to.be.true;
+					collection._preventSync.restore();
+					done();
+				}, function (err) {
+					console.log(err);
+				});
+
+
+
+			});
+			it('should set _remoteChanging to false after the promise resolves');
+			it('should increment the length of the collection by one');
+
 		});
 
 		describe('#remove', function () {
 
 
 			var Collection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users'
+				url: 'http://127.0.0.1:8081/highway/users'
 			});
 
 			var collection = new Collection();
@@ -717,7 +747,7 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#reset', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users'
+				url: 'http://127.0.0.1:8081/highway/users'
 			});
 
 			var collection = new Collection();
@@ -785,7 +815,7 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#_log', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
-				url: '127.0.0.1/highway/users'
+				url: 'http://127.0.0.1:8081/highway/users'
 			});
 
 			var collection = new Collection();
@@ -811,7 +841,7 @@ describe('Backbone.Highway.Collection', function () {
 			var model = {};
 			beforeEach(function () {
 				var Collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users',
+					url: 'http://127.0.0.1:8081/highway/users',
 					autoSync: true
 				});
 
@@ -841,7 +871,7 @@ describe('Backbone.Highway.Collection', function () {
 			var collection;
 			beforeEach(function () {
 				var Collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users',
+					url: 'http://127.0.0.1:8081/highway/users',
 					idAttribute: Backbone.Model.prototype.idAttribute,
 					autoSync: true
 				});
@@ -916,7 +946,7 @@ describe('Backbone.Highway.Collection', function () {
 			var collection;
 			beforeEach(function () {
 				var Collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users',
+					url: 'http://127.0.0.1:8081/highway/users',
 					autoSync: true
 				});
 
@@ -974,7 +1004,7 @@ describe('Backbone.Highway.Collection', function () {
 			var collection;
 			beforeEach(function () {
 				var Collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users',
+					url: 'http://127.0.0.1:8081/highway/users',
 					autoSync: true
 				});
 
@@ -1033,7 +1063,7 @@ describe('Backbone.Highway.Collection', function () {
 			beforeEach(function () {
 
 				var Collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users'
+					url: 'http://127.0.0.1:8081/highway/users'
 				});
 
 				collection = new Collection();
@@ -1072,14 +1102,16 @@ describe('Backbone.Highway.Collection', function () {
 
 
 
+		describe('#_addModel', function () {
 
+		});
 		describe('#add', function () {
 			var collection;
 			var model, models;
 			beforeEach(function () {
 
 				var Collection = Backbone.Highway.Collection.extend({
-					url: '127.0.0.1/highway/users'
+					url: 'http://127.0.0.1:8081/highway/users'
 				});
 
 				models = [
