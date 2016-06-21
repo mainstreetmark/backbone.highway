@@ -514,19 +514,67 @@ describe('Backbone.Highway.Collection', function () {
 			it('should resolve if collection isnt partial', function (done) {
 				c._search().should.eventually.notify(done);
 			});
-			it('should emit a search event if the collection is partial');
+			it('should emit a search event if the collection is partial', function () {
+
+				collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users',
+					minimum: {
+						limit: 1
+					}
+				});
+				c = new collection();
+
+				sinon.spy(c.io, 'emit');
+
+				c._search({
+					search: {
+						name: 'Dave'
+					}
+				});
+				expect(c.io.emit.calledWith('search')).to.be.true;
+				c.io.emit.restore();
+			});
 		});
 
 		describe('#_where', function () {
-			it('should exist', function () {
-				//expect(coll)
+			var collection, c;
+			beforeEach(function () {
+				collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users',
+					minimum: {
+						limit: 1
+					}
+				});
+				c = new collection();
 			});
-			it('should be a method');
-			it('should return a promise');
-			it('should call _search');
-			it('should resolve after _search()');
-			it('should reject if search fails');
-			it('should append fetched results to collection after _search');
+			it('should exist', function () {
+				expect(c._where).to.be.ok;
+			});
+			it('should be a method', function () {
+				expect(c._where).to.be.a('function');
+			});
+			it('should return a promise', function () {
+				expect(c._where()).to.be.a('object');
+			});
+			it('should call _search', function () {
+				sinon.spy(c, '_search');
+
+				c._where();
+				expect(c._search.calledOnce).to.be.true;
+
+				c._search.restore();
+			});
+			it('should resolve after _search()', function (done) {
+				var o = c._where({});
+				o.should.eventually.notify(done);
+			});
+			it('should append fetched results to collection after _search', function (done) {
+				var len = c.length;
+				c._where({}).then(function () {
+					expect(c.length > len).to.be.true;
+					done();
+				})
+			});
 		});
 
 		describe('#_filter', function () {
@@ -697,7 +745,6 @@ describe('Backbone.Highway.Collection', function () {
 			});
 
 			it('should set _remoteChanging to true while waiting for promise to resolve', function (done) {
-				this.timeout(20000);
 				sinon.spy(collection, '_preventSync');
 
 				collection._create({
@@ -709,12 +756,31 @@ describe('Backbone.Highway.Collection', function () {
 				}, function (err) {
 					console.log(err);
 				});
-
-
-
 			});
-			it('should set _remoteChanging to false after the promise resolves');
-			it('should increment the length of the collection by one');
+			it('should set _remoteChanging to false after the promise resolves', function (done) {
+				sinon.spy(collection, '_preventSync');
+
+				collection._create({
+					firstname: 'David'
+				}).then(function () {
+					expect(collection._preventSync.calledWith(false, false)).to.be.true;
+					collection._preventSync.restore();
+					done();
+				}, function (err) {
+					console.log(err);
+				});
+			});
+			it('should increment the length of the collection by one', function (done) {
+				var original_length = collection.length;
+				collection._create({
+					firstname: 'David'
+				}).then(function () {
+					expect(collection.length).to.equal(original_length + 1);
+					done();
+				}, function (err) {
+					console.log(err);
+				});
+			});
 
 		});
 
