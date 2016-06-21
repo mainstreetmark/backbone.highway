@@ -362,7 +362,7 @@ describe('Backbone.Highway.Model', function () {
 
 			sinon.spy(collection, 'remove');
 			model.destroy();
-			expect(collection.remove.calledOnce).to.be.true;
+			var o = expect(collection.remove.calledOnce).to.be.true;
 
 			collection.remove.restore();
 		});
@@ -370,7 +370,7 @@ describe('Backbone.Highway.Model', function () {
 			sinon.spy(model, 'destroy');
 
 			model.destroy();
-			expect(model.destroy.calledOnce).to.be.true;
+			var o = expect(model.destroy.calledOnce).to.be.true;
 
 			model.destroy.restore();
 		});
@@ -409,7 +409,7 @@ describe('Backbone.Highway.Model', function () {
 				.to.be.a('function');
 		});
 		it('should return true', function () {
-			expect(model.sync()).to.be.true;
+			return expect(model.sync()).to.be.true;
 		});
 		it('should trigger a collection sync event, if a collection exists', function () {
 			var c = Backbone.Collection.extend({});
@@ -421,7 +421,7 @@ describe('Backbone.Highway.Model', function () {
 			});
 			model.sync();
 
-			expect(sync).to.be.true;
+			return expect(sync).to.be.true;
 
 
 		});
@@ -473,7 +473,7 @@ describe('Backbone.Highway.Collection', function () {
 			}
 		});
 		var c = new Collection();
-		expect(c.url).to.be.ok;
+		return expect(c.url).to.be.ok;
 	});
 
 
@@ -503,7 +503,7 @@ describe('Backbone.Highway.Collection', function () {
 				c = new collection();
 			});
 			it('should exist', function () {
-				expect(c._search).to.be.ok;
+				return expect(c._search).to.be.ok;
 			});
 			it('should be a method', function () {
 				expect(c._search).to.be.a('function');
@@ -531,7 +531,7 @@ describe('Backbone.Highway.Collection', function () {
 						name: 'Dave'
 					}
 				});
-				expect(c.io.emit.calledWith('search')).to.be.true;
+				var o = expect(c.io.emit.calledWith('search')).to.be.true;
 				c.io.emit.restore();
 			});
 		});
@@ -548,7 +548,7 @@ describe('Backbone.Highway.Collection', function () {
 				c = new collection();
 			});
 			it('should exist', function () {
-				expect(c._where).to.be.ok;
+				return expect(c._where).to.be.ok;
 			});
 			it('should be a method', function () {
 				expect(c._where).to.be.a('function');
@@ -560,7 +560,7 @@ describe('Backbone.Highway.Collection', function () {
 				sinon.spy(c, '_search');
 
 				c._where();
-				expect(c._search.calledOnce).to.be.true;
+				var o = expect(c._search.calledOnce).to.be.true;
 
 				c._search.restore();
 			});
@@ -571,9 +571,9 @@ describe('Backbone.Highway.Collection', function () {
 			it('should append fetched results to collection after _search', function (done) {
 				var len = c.length;
 				c._where({}).then(function () {
-					expect(c.length > len).to.be.true;
+					var o = expect(c.length > len).to.be.true;
 					done();
-				})
+				});
 			});
 		});
 
