@@ -643,6 +643,33 @@ describe('Backbone.Highway.Collection', function () {
 
 		});
 
+		describe('#_findWhere', function () {
+			var c, collection;
+			beforeEach(function () {
+				collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users',
+				});
+				c = new collection();
+
+			});
+			it('should exist', function () {
+				return expect(c._findWhere).to.be.ok;
+			});
+			it('should be a method', function () {
+				expect(c._findWhere).to.be.a('function');
+			});
+			it('should return a promise', function () {
+				expect(c._findWhere()).to.be.a('object');
+			});
+			it('should call _where', function () {
+				sinon.spy(c, '_where');
+				var where = c._findWhere({});
+				expect(c._where.calledOnce).to.be.true;
+
+				c._where.restore();
+			});
+		});
+
 		describe('#create', function () {
 
 			var Collection = Backbone.Highway.Collection.extend({
@@ -800,12 +827,50 @@ describe('Backbone.Highway.Collection', function () {
 
 		describe('#remove', function () {
 
+			var Collection, collection;
+			beforeEach(function () {
+				Collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users'
+				});
 
-			var Collection = Backbone.Highway.Collection.extend({
-				url: 'http://127.0.0.1:8081/highway/users'
+				collection = new Collection();
 			});
 
-			var collection = new Collection();
+			it('should exist', function () {
+				expect(collection.remove).to.be.ok;
+			});
+			it('should be a method', function () {
+				expect(collection.remove).to.be.a('function');
+			});
+			it('should call Backbone.Collection.prototype.remove', function () {
+				sinon.spy(Backbone.Collection.prototype, 'remove');
+				collection.remove('dave');
+				expect(Backbone.Collection.prototype.remove.calledOnce).to.be.true;
+				Backbone.Collection.prototype.remove.restore();
+			});
+			it('should emit a "destroy" socket event', function () {
+				sinon.spy(collection.io, 'emit');
+				collection.remove('dave');
+				expect(collection.io.emit.calledOnce).to.be.true;
+				collection.io.emit.restore();
+			});
+			it('should accept strings as models', function () {
+				var r = collection.remove('scott');
+				expect(r).to.not.be.undefined;
+			});
+			it('should accept numbers as models', function () {
+				var r = collection.remove(55);
+				expect(r).to.not.be.undefined;
+			});
+			it('should accept objects as models', function () {
+				var r = collection.remove(collection.at(1));
+				expect(r).to.not.be.undefined;
+			});
+			it('should not accept bools as models', function () {
+				var r = collection.remove(true);
+				expect(r).to.be.undefined;
+			});
+
 
 			// call silently
 			it('should set _suppressEvent to true when set silently', function () {
@@ -1146,15 +1211,13 @@ describe('Backbone.Highway.Collection', function () {
 					url: 'http://127.0.0.1:8081/highway/users'
 				});
 
-				collection = new Collection();
-
-				collection.models = [
+				collection = new Collection([
 					new Backbone.Model({
 						id: '1',
 						name: 'David',
 						age: 26
 					})
-				];
+				]);
 
 				model = new Backbone.Model({
 					id: "1",
@@ -1164,19 +1227,43 @@ describe('Backbone.Highway.Collection', function () {
 
 			});
 
-			it('should not update if the model\'s _remoteChanging property is true', function () {
-
-				model._remoteChanging = true;
-
+			it('should exist', function () {
+				expect(collection._updateModel).to.be.ok;
+			});
+			it('should be a method', function () {
+				expect(collection._updateModel).to.be.a('function');
+			});
+			it('should return if no model is provided', function () {
+				expect(collection._updateModel()).to.be.undefined;
+			});
+			it('should build a "save" object from changedAttributes()', function () {
+				sinon.spy(model, 'changedAttributes');
 				collection._updateModel(model);
-
-				var collectionModel = collection.models[0];
-
-				return expect(collectionModel.get('name'))
-					.to.equal('David');
-
+				expect(model.changedAttributes.calledOnce).to.be.true;
+				model.changedAttributes.restore();
+			});
+			it('should not emit an update event if model._id is not present', function () {
+				sinon.spy(collection.io, 'emit');
+				collection._updateModel(model);
+				expect(collection.io.emit.calledOnce).to.be.false;
+				collection.io.emit.restore();
+			})
+			it('should emit an update event if model._id is present', function () {
+				sinon.spy(collection.io, 'emit');
+				model.set("_id", "test");
+				collection._updateModel(model);
+				expect(collection.io.emit.calledOnce).to.be.true;
+				collection.io.emit.restore();
 			});
 
+
+			it('should not update if the model\'s _remoteChanging property is true', function () {
+				model._remoteChanging = true;
+				collection._updateModel(model);
+				var collectionModel = collection.models[0];
+				return expect(collectionModel.get('name'))
+					.to.equal('David');
+			});
 		});
 
 
@@ -1185,6 +1272,34 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#_addModel', function () {
 
 		});
+
+		describe('#_removeModel', function () {
+			var c, collection;
+			beforeEach(function () {
+				collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users',
+				});
+				c = new collection();
+			});
+			it('should exist', function () {
+				expect(c._removeModel).to.be.ok;
+			});
+			it('should be a method', function () {
+				expect(c._removeModel).to.be.a('function');
+			});
+			it('should return if no model is provided', function () {
+				expect(c._removeModel()).to.be.undefined;
+			});
+			it('should emit a destroy event', function () {
+				sinon.spy(c.io, 'emit');
+				c._removeModel({});
+
+				expect(c.io.emit.calledOnce).to.be.true;
+				c.io.emit.restore();
+			});
+		});
+
+
 		describe('#add', function () {
 			var collection;
 			var model, models;
