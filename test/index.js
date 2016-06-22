@@ -534,6 +534,20 @@ describe('Backbone.Highway.Collection', function () {
 				var o = expect(c.io.emit.calledWith('search')).to.be.true;
 				c.io.emit.restore();
 			});
+			it('should reject if search criteria isnt valid', function (done) {
+				collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users',
+					minimum: {
+						limit: 1
+					}
+				});
+				c = new collection();
+
+				var promise = c._search({
+					fluffer: 'nutter'
+				});
+				promise.should.eventually.be.rejected.notify(done);
+			})
 		});
 
 		describe('#_where', function () {
