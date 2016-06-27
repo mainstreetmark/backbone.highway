@@ -261,6 +261,9 @@ describe('Backbone.Highway.Model', function () {
 			return expect(model.get('object'))
 				.to.be.a('object');
 		});
+		it('should return a bool when prop is a bool', function(){
+			return expect(model.get('bool')).to.be.a('boolean');
+		});
 		it('should return a prop when prop is nested in an object', function () {
 			return expect(model.get('object.level'))
 				.to.be('one');
