@@ -1026,13 +1026,32 @@ describe('Backbone.Highway.Collection', function () {
 
 				collection = new Collection();
 
-				collection.models = [
-					new Backbone.Model({
+				collection.add(
+					[new Backbone.Model({
 						id: '1',
 						name: 'David',
 						age: 26
-					})
-				];
+					}),
+					new Backbone.Model(
+						{
+							"number": 123,
+							"string": "The quick brown fox jumped over the lazy dog",
+							"array": [1, 2, 3, "one", "two", "three", {
+								"prop": true
+							}],
+							"bool": true,
+							"object": {
+								"level": "one",
+								"nested": {
+									"level": "two",
+									"nullprop": null
+								}
+							}
+						}
+					)
+
+				],
+				 {silent : true });
 
 			});
 
