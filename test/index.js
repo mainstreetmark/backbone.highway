@@ -70,6 +70,30 @@ describe('Backbone.Highway.Model', function () {
 			.to.be.ok;
 	});
 
+	describe('#clear', function(){
+		var Model = Backbone.Highway.Model.extend({
+
+		});
+		var m = new Model({ "_id": "123", "name": "Dave"});
+		it('should exist', function(){
+			expect(m.clear).to.be.ok;
+		});
+		it('should be a method', function(){
+			expect(m.clear).to.be.a('function');
+		});
+		it('should remove attributes from a model', function(){
+			m = new Model({ "_id": "123", "name": "Dave"});
+			m.clear();
+			expect(m.get('name')).to.be.a('undefined');
+		});
+		it('should not remove the _id attribute from a model', function(){
+			m = new Model({ "_id": "123", "name": "Dave"});
+			m.clear();
+			expect(m.get('_id')).to.be.a('string');
+		});
+		//it('should trigger a change event with the unset option');
+	});
+
 	describe('#save', function () {
 		var collection;
 		var model = {};

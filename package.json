@@ -1,6 +1,6 @@
 {
   "name": "backbone.highway",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Cruise the highway with backbone!",
   "main": "lib/backbone.highway.js",
   "scripts": {
