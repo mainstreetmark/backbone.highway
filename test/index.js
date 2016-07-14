@@ -310,45 +310,6 @@ describe('Backbone.Highway.Model', function () {
 		});
 	});
 
-	describe('#set', function () {
-		var collection;
-		var model = {};
-		beforeEach(function () {
-			var Model = Backbone.Highway.Model.extend({
-
-			});
-
-			model = new Model({
-				"number": 123,
-				"string": "The quick brown fox jumped over the lazy dog",
-				"array": [1, 2, 3, "one", "two", "three", {
-					"prop": true
-				}],
-				"bool": true,
-				"object": {
-					"level": "one",
-					"nested": {
-						"level": "two",
-						"nullprop": null
-					}
-				}
-			});
-		});
-
-		it('should exist', function () {
-			return expect(model.set)
-				.to.be.ok;
-		});
-		it('should be a method', function () {
-			return expect(model.set)
-				.to.be.a('function');
-		});
-		it('should return model with no arguments', function () {
-			return expect(model.set())
-				.to.be.ok;
-		});
-	});
-
 	describe('#destroy', function () {
 		var collection;
 		var model = {};
@@ -1096,7 +1057,7 @@ describe('Backbone.Highway.Collection', function () {
 
 			});
 
-			it('should update local model from remote update', function () {
+		/*	it('should update local model from remote update', function () {
 
 				var mockSnap = {
 					id: '1',
@@ -1108,12 +1069,12 @@ describe('Backbone.Highway.Collection', function () {
 
 				collection._childChanged(mockSnap);
 
-				var changedModel = collection.models[0];
+				var changedModel = collection.get('1');
 
 				expect(changedModel.get('favDino'))
-					.to.be.ok;
+					.to.equal('trex');
 
-			});
+			}); */
 
 			it('should add when item cannot be found', function () {
 				sinon.spy(collection, '_childAdded');
