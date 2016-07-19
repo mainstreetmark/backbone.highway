@@ -26,7 +26,6 @@ before(function (done) {
 
 	var ioserver = require('socket.io')
 		.listen(server);
-	//io.set('origins', 'http://localhost:*');
 
 	var config = {
 		uri: '127.0.0.1',
@@ -40,7 +39,8 @@ before(function (done) {
 	config.http = app;
 	config.io = ioserver;
 	var Highway = require('highway');
-	var hw = new Highway(config).then(function () {
+	var hw = new Highway(config).then(function (obj) {
+		obj.db.collection('users').remove({});
 		done();
 	}, function (err) {
 		console.log('error: ', err);
@@ -414,6 +414,47 @@ describe('Backbone.Highway.Model', function () {
 
 		});
 	});
+});
+
+
+describe('Backbone.Highway.Model in a collection', function(){
+	describe('#set', function(){
+		var Collection, col, Model, m;
+		Model = Backbone.Highway.Model.extend({
+			defaults: {mickey : 'mouse'}
+		});
+		Collection = Backbone.Highway.Collection.extend({
+			url: 'http://127.0.0.1:8081/highway/users',
+			Model: Model
+		})
+
+		beforeEach(function(done){
+			this.timeout(5000);
+			c = new Collection();
+			setTimeout(function(){
+				c.add({ steve: 'irwin' });
+				done();
+			}, 4000)
+		});
+		it('should call io.emit if it belongs to a collection', function(){
+
+			m = c.at(0);
+			sinon.spy(c.io, 'emit');
+			m.set({ crap : true});
+			
+			expect(c.io.emit.calledOnce).to.be.true;
+			c.io.emit.restore();
+		});
+		it('should call io.emit with an update argument', function(){
+
+			m = c.at(0);
+			sinon.spy(c.io, 'emit');
+			m.set({ crap2 : true});
+			
+			expect(c.io.emit.calledWith('update')).to.be.true;
+			c.io.emit.restore();
+		});	
+	})
 });
 
 describe('Backbone.Highway.Collection', function () {
