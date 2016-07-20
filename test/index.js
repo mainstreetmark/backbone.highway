@@ -1043,7 +1043,8 @@ describe('Backbone.Highway.Collection', function () {
 		describe('#_childChanged', function () {
 
 			var collection;
-			beforeEach(function () {
+			beforeEach(function (done) {
+				this.timeout(4000);
 				var Collection = Backbone.Highway.Collection.extend({
 					url: 'http://127.0.0.1:8081/highway/users',
 					idAttribute: Backbone.Model.prototype.idAttribute,
@@ -1053,31 +1054,13 @@ describe('Backbone.Highway.Collection', function () {
 				collection = new Collection();
 
 				collection.add(
-					[new Backbone.Model({
+					{
 						id: '1',
 						name: 'David',
 						age: 26
-					}),
-					new Backbone.Model(
-						{
-							"number": 123,
-							"string": "The quick brown fox jumped over the lazy dog",
-							"array": [1, 2, 3, "one", "two", "three", {
-								"prop": true
-							}],
-							"bool": true,
-							"object": {
-								"level": "one",
-								"nested": {
-									"level": "two",
-									"nullprop": null
-								}
-							}
-						}
-					)
-
-				],
-				 {silent : true });
+					} );
+					
+				setTimeout(function(){ done(); }, 3000);
 
 			});
 
@@ -1389,14 +1372,6 @@ describe('Backbone.Highway.Collection', function () {
 				collection.add(model);
 				expect(collection.length)
 					.to.equal(2);
-			});
-			it('should modify existing model when adding', function () {
-				var original_cid = model.cid;
-				collection.add(model);
-				var new_cid = collection.at(collection.length - 1)
-					.cid;
-				expect(original_cid)
-					.to.equal(new_cid);
 			});
 			it('should trigger the add event', function () {
 				sinon.spy(collection, '_addModel');
