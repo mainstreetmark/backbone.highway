@@ -16,10 +16,10 @@ install:
 - npm install -g mocha
 - npm install -g backbone
 - npm install -g socket.io-client
-- npm install -g git+https://github.com/krewenki/highway
+- npm install -g highway.server
 - npm install
 before_script:
-  - sleep 30
+  - sleep 10
   - mongo highway --eval 'db.createCollection("users");'
 script:
 - npm test
