@@ -43,7 +43,7 @@
     "coveralls": "^2.11.9",
     "expect.js": "^0.3.1",
     "express": "^4.14.0",
-    "highway": "git+https://github.com/krewenki/highway.git",
+    "highway.server": "^0.3.0",
     "jsdom": "8.5.0",
     "jsdom-global": "1.7.0",
     "mocha-lcov-reporter": "^1.2.0",

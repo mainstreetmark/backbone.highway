@@ -38,7 +38,7 @@ before(function (done) {
 	};
 	config.http = app;
 	config.io = ioserver;
-	var Highway = require('highway');
+	var Highway = require('highway.server');
 	var hw = new Highway(config).then(function (obj) {
 		obj.db.collection('users').remove({});
 		done();
@@ -441,7 +441,7 @@ describe('Backbone.Highway.Model in a collection', function(){
 			m = c.at(0);
 			sinon.spy(c.io, 'emit');
 			m.set({ crap : true});
-			
+
 			expect(c.io.emit.calledOnce).to.be.true;
 			c.io.emit.restore();
 		});
@@ -450,10 +450,10 @@ describe('Backbone.Highway.Model in a collection', function(){
 			m = c.at(0);
 			sinon.spy(c.io, 'emit');
 			m.set({ crap2 : true});
-			
+
 			expect(c.io.emit.calledWith('update')).to.be.true;
 			c.io.emit.restore();
-		});	
+		});
 	})
 });
 
