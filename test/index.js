@@ -608,10 +608,12 @@ describe('Backbone.Highway.Collection', function () {
 				c._search.restore();
 			});
 			it('should resolve after _search()', function (done) {
+				this.timeout(10000);
 				var o = c._where({});
 				o.should.eventually.notify(done);
 			});
 			it('should append fetched results to collection after _search', function (done) {
+				this.timeout(10000);
 				var len = c.length;
 				c._where({}).then(function () {
 					var o = expect(c.length > len).to.be.true;
