@@ -814,32 +814,8 @@ describe('Backbone.Highway.Collection', function () {
 				expectFalse.should.eventually.be.rejected.notify(done);
 			});
 
-			it('should set _remoteChanging to true while waiting for promise to resolve', function (done) {
-				sinon.spy(collection, '_preventSync');
 
-				collection._create({
-					firstname: 'David'
-				}).then(function () {
-					expect(collection._preventSync.calledWith(false, true)).to.be.true;
-					collection._preventSync.restore();
-					done();
-				}, function (err) {
-					console.log(err);
-				});
-			});
-			it('should set _remoteChanging to false after the promise resolves', function (done) {
-				sinon.spy(collection, '_preventSync');
 
-				collection._create({
-					firstname: 'David'
-				}).then(function () {
-					expect(collection._preventSync.calledWith(false, false)).to.be.true;
-					collection._preventSync.restore();
-					done();
-				}, function (err) {
-					console.log(err);
-				});
-			});
 			it('should increment the length of the collection by one', function (done) {
 				var original_length = collection.length;
 				collection._create({
@@ -1010,35 +986,7 @@ describe('Backbone.Highway.Collection', function () {
 
 		});
 
-		describe('#_preventSync', function () {
-			var collection;
-			var model = {};
-			beforeEach(function () {
-				var Collection = Backbone.Highway.Collection.extend({
-					url: 'http://127.0.0.1:8081/highway/users',
-					autoSync: true
-				});
 
-				collection = new Collection();
-			})
-
-			it('should change from false to true', function () {
-
-				collection._preventSync(model, true);
-				expect(model._remoteChanging)
-					.to.be.ok;
-
-			});
-
-			it('should change from true to false', function () {
-
-				collection._preventSync(model, false);
-				expect(model._remoteChanging)
-					.to.be.false;
-
-			});
-
-		});
 
 		describe('#_childChanged', function () {
 
