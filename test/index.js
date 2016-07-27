@@ -521,7 +521,23 @@ describe('Backbone.Highway.Collection', function () {
 				.to.be.ok;
 		});
 
-
+		describe('#_initialSync', function(){
+			describe('maximum', function(){
+				var collection, c;
+				beforeEach(function () {
+					collection = Backbone.Highway.Collection.extend({
+						url: 'http://127.0.0.1:8081/highway/users',
+						maximum: {
+							limit: 2
+						}
+					});
+					c = new collection();
+				});
+				it('should be included in this.constraints.maximum', function(){
+					expect(c.constraints.maximum).to.be.ok;
+				});
+			});
+		});
 
 		describe('#_search', function () {
 			var collection, c;
@@ -576,7 +592,7 @@ describe('Backbone.Highway.Collection', function () {
 					fluffer: 'nutter'
 				});
 				promise.should.eventually.be.rejected.notify(done);
-			})
+			});
 		});
 
 		describe('#_where', function () {
@@ -1009,7 +1025,7 @@ describe('Backbone.Highway.Collection', function () {
 						name: 'David',
 						age: 26
 					} );
-					
+
 				setTimeout(function(){ done(); }, 3000);
 
 			});
