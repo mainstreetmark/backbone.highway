@@ -11,9 +11,6 @@ global._ = require('underscore');
 global.io = require('socket.io-client');
 require('../lib/backbone.highway.js');
 
-
-
-
 before(function (done) {
 	this.timeout(20000);
 	var express = require('express');
@@ -535,6 +532,13 @@ describe('Backbone.Highway.Collection', function () {
 				});
 				it('should be included in this.constraints.maximum', function(){
 					expect(c.constraints.maximum).to.be.ok;
+				});
+				it('should have a maximum length', function(done){
+					this.timeout(4000);
+					setTimeout(function(){
+						expect(c.length <= 2).to.be.true;
+						done();
+					}, 3000);
 				});
 			});
 		});
