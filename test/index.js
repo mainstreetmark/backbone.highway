@@ -533,12 +533,22 @@ describe('Backbone.Highway.Collection', function () {
 				it('should be included in this.constraints.maximum', function(){
 					expect(c.constraints.maximum).to.be.ok;
 				});
-				it('should have a maximum length', function(done){
+				it('should have obey maximum length', function(done){
 					this.timeout(4000);
 					setTimeout(function(){
 						expect(c.length <= 2).to.be.true;
 						done();
 					}, 3000);
+				});
+				it('should not emit a destroy event when autopruning', function(){
+					sinon.spy(c.io,'emit');
+					for(var i = 0; i<20; i++){
+						c.add({name: 'Bill'});
+					}
+					expect(c.io.emit.calledWith('remove')).to.be.false;
+					expect(c.length <= 2).to.be.true;
+					c.io.emit.restore();
+
 				});
 			});
 		});
