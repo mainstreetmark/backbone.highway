@@ -220,6 +220,7 @@ describe('Backbone.Highway.Model', function () {
 			model._setRecursive.restore();
 		});
 		it('should create objects if they dont exist', function () {
+			localStorage.setItem('backfill_users', '[{ "name": "fart"}]');
 			expect(model.get('darth.vader'))
 				.to.be.a('undefined');
 			model.set('darth.vader', 'Lukes Dad');
