@@ -9,7 +9,14 @@ chai.use(chaiAsPromised);
 global.Backbone = require('backbone');
 global._ = require('underscore');
 global.io = require('socket.io-client');
+if (typeof localStorage === "undefined" || localStorage === null) {
+	var LocalStorage = require('node-localstorage').LocalStorage;
+	localStorage = new LocalStorage('./scratch');
+}
+
 require('../lib/backbone.highway.js');
+
+
 
 before(function (done) {
 	this.timeout(20000);
@@ -67,24 +74,33 @@ describe('Backbone.Highway.Model', function () {
 			.to.be.ok;
 	});
 
-	describe('#clear', function(){
+	describe('#clear', function () {
 		var Model = Backbone.Highway.Model.extend({
 
 		});
-		var m = new Model({ "_id": "123", "name": "Dave"});
-		it('should exist', function(){
+		var m = new Model({
+			"_id": "123",
+			"name": "Dave"
+		});
+		it('should exist', function () {
 			expect(m.clear).to.be.ok;
 		});
-		it('should be a method', function(){
+		it('should be a method', function () {
 			expect(m.clear).to.be.a('function');
 		});
-		it('should remove attributes from a model', function(){
-			m = new Model({ "_id": "123", "name": "Dave"});
+		it('should remove attributes from a model', function () {
+			m = new Model({
+				"_id": "123",
+				"name": "Dave"
+			});
 			m.clear();
 			expect(m.get('name')).to.be.a('undefined');
 		});
-		it('should not remove the _id attribute from a model', function(){
-			m = new Model({ "_id": "123", "name": "Dave"});
+		it('should not remove the _id attribute from a model', function () {
+			m = new Model({
+				"_id": "123",
+				"name": "Dave"
+			});
 			m.clear();
 			expect(m.get('_id')).to.be.a('string');
 		});
@@ -282,7 +298,7 @@ describe('Backbone.Highway.Model', function () {
 			return expect(model.get('object'))
 				.to.be.a('object');
 		});
-		it('should return a bool when prop is a bool', function(){
+		it('should return a bool when prop is a bool', function () {
 			return expect(model.get('bool')).to.be.a('boolean');
 		});
 		it('should return a prop when prop is nested in an object', function () {
@@ -414,39 +430,47 @@ describe('Backbone.Highway.Model', function () {
 });
 
 
-describe('Backbone.Highway.Model in a collection', function(){
-	describe('#set', function(){
+describe('Backbone.Highway.Model in a collection', function () {
+	describe('#set', function () {
 		var Collection, col, Model, m;
 		Model = Backbone.Highway.Model.extend({
-			defaults: {mickey : 'mouse'}
+			defaults: {
+				mickey: 'mouse'
+			}
 		});
 		Collection = Backbone.Highway.Collection.extend({
 			url: 'http://127.0.0.1:8081/highway/users',
 			Model: Model
 		})
 
-		beforeEach(function(done){
+		beforeEach(function (done) {
 			this.timeout(5000);
 			c = new Collection();
-			setTimeout(function(){
-				c.add({ steve: 'irwin' });
+			setTimeout(function () {
+				c.add({
+					steve: 'irwin'
+				});
 				done();
 			}, 4000)
 		});
-		it('should call io.emit if it belongs to a collection', function(){
+		it('should call io.emit if it belongs to a collection', function () {
 
 			m = c.at(0);
 			sinon.spy(c.io, 'emit');
-			m.set({ crap : true});
+			m.set({
+				crap: true
+			});
 
 			expect(c.io.emit.calledOnce).to.be.true;
 			c.io.emit.restore();
 		});
-		it('should call io.emit with an update argument', function(){
+		it('should call io.emit with an update argument', function () {
 
 			m = c.at(0);
 			sinon.spy(c.io, 'emit');
-			m.set({ crap2 : true});
+			m.set({
+				crap2: true
+			});
 
 			expect(c.io.emit.calledWith('update')).to.be.true;
 			c.io.emit.restore();
@@ -518,8 +542,8 @@ describe('Backbone.Highway.Collection', function () {
 				.to.be.ok;
 		});
 
-		describe('#_initialSync', function(){
-			describe('maximum', function(){
+		describe('#_initialSync', function () {
+			describe('maximum', function () {
 				var collection, c;
 				beforeEach(function () {
 					collection = Backbone.Highway.Collection.extend({
@@ -530,20 +554,22 @@ describe('Backbone.Highway.Collection', function () {
 					});
 					c = new collection();
 				});
-				it('should be included in this.constraints.maximum', function(){
+				it('should be included in this.constraints.maximum', function () {
 					expect(c.constraints.maximum).to.be.ok;
 				});
-				it('should have obey maximum length', function(done){
+				it('should have obey maximum length', function (done) {
 					this.timeout(4000);
-					setTimeout(function(){
+					setTimeout(function () {
 						expect(c.length).to.be.below(3);
 						done();
 					}, 3000);
 				});
-				it('should not emit a destroy event when autopruning', function(){
-					sinon.spy(c.io,'emit');
-					for(var i = 0; i<20; i++){
-						c.add({name: 'Bill'});
+				it('should not emit a destroy event when autopruning', function () {
+					sinon.spy(c.io, 'emit');
+					for (var i = 0; i < 20; i++) {
+						c.add({
+							name: 'Bill'
+						});
 					}
 					expect(c.io.emit.calledWith('remove')).to.be.false;
 					expect(c.length).to.be.below(3);
@@ -1033,14 +1059,15 @@ describe('Backbone.Highway.Collection', function () {
 
 				collection = new Collection();
 
-				collection.add(
-					{
-						id: '1',
-						name: 'David',
-						age: 26
-					} );
+				collection.add({
+					id: '1',
+					name: 'David',
+					age: 26
+				});
 
-				setTimeout(function(){ done(); }, 3000);
+				setTimeout(function () {
+					done();
+				}, 3000);
 
 			});
 
@@ -1061,24 +1088,24 @@ describe('Backbone.Highway.Collection', function () {
 
 			});
 
-		/*	it('should update local model from remote update', function () {
+			/*	it('should update local model from remote update', function () {
 
-				var mockSnap = {
-					id: '1',
-					name: 'David',
-					age: 26,
-					favDino: 'trex'
-						// trex has been added
-				};
+					var mockSnap = {
+						id: '1',
+						name: 'David',
+						age: 26,
+						favDino: 'trex'
+							// trex has been added
+					};
 
-				collection._childChanged(mockSnap);
+					collection._childChanged(mockSnap);
 
-				var changedModel = collection.get('1');
+					var changedModel = collection.get('1');
 
-				expect(changedModel.get('favDino'))
-					.to.equal('trex');
+					expect(changedModel.get('favDino'))
+						.to.equal('trex');
 
-			}); */
+				}); */
 
 			it('should add when item cannot be found', function () {
 				sinon.spy(collection, '_childAdded');
