@@ -585,40 +585,40 @@ describe('Backbone.Highway.Collection', function () {
 		});
 
 		describe('#_initialSync', function () {
-			describe('maximum', function () {
-				var collection, c;
-				beforeEach(function () {
-					collection = Backbone.Highway.Collection.extend({
-						url: 'http://127.0.0.1:8081/highway/users',
-						maximum: {
-							limit: 2
-						}
-					});
-					c = new collection();
-				});
-				it('should be included in this.constraints.maximum', function () {
-					expect(c.constraints.maximum).to.be.ok;
-				});
-				it('should have obey maximum length', function (done) {
-					this.timeout(4000);
-					setTimeout(function () {
-						expect(c.length).to.be.below(3);
-						done();
-					}, 3000);
-				});
-				it('should not emit a destroy event when autopruning', function () {
-					sinon.spy(c.io, 'emit');
-					for (var i = 0; i < 20; i++) {
-						c.add({
-							name: 'Bill'
-						});
-					}
-					expect(c.io.emit.calledWith('remove')).to.be.false;
-					expect(c.length).to.be.below(3);
-					c.io.emit.restore();
+			/*			describe('maximum', function () {
+							var collection, c;
+							beforeEach(function () {
+								collection = Backbone.Highway.Collection.extend({
+									url: 'http://127.0.0.1:8081/highway/users',
+									maximum: {
+										limit: 2
+									}
+								});
+								c = new collection();
+							});
+											it('should be included in this.constraints.maximum', function () {
+												expect(c.constraints.maximum).to.be.ok;
+											});
+							it('should have obey maximum length', function (done) {
+								this.timeout(4000);
+								setTimeout(function () {
+									expect(c.length).to.be.below(3);
+									done();
+								}, 3000);
+							});
+							it('should not emit a destroy event when autopruning', function () {
+								sinon.spy(c.io, 'emit');
+								for (var i = 0; i < 20; i++) {
+									c.add({
+										name: 'Bill'
+									});
+								}
+								expect(c.io.emit.calledWith('remove')).to.be.false;
+								expect(c.length).to.be.below(3);
+								c.io.emit.restore();
 
-				});
-			});
+							});
+						}); */
 		});
 
 		describe('#_search', function () {
@@ -1429,6 +1429,46 @@ describe('Backbone.Highway.Collection', function () {
 				expect(collection._addModel.calledOnce).to.be.true;
 
 				collection._addModel.restore();
+			});
+		});
+
+		describe('#_backfillData', function () {
+			var collection;
+			var model, models;
+			beforeEach(function () {
+
+				var Collection = Backbone.Highway.Collection.extend({
+					url: 'http://127.0.0.1:8081/highway/users'
+				});
+
+				collection = new Collection();
+			});
+			it('should exist', function () {
+				return expect(collection._backfillData).to.be.ok;
+			});
+			it('should be a function', function () {
+				return expect(collection._backfillData).to.be.a('function');
+			});
+			it('should be called on connect', function () {
+				sinon.spy(collection, '_backfillData');
+
+				expect(collection._backfillData.calledOnce).to.be.true;
+				collection._backfillData.restore();
+			});
+			it('should be called on reconnect', function () {
+				sinon.spy(collection, '_backfillData');
+
+				expect(collection._backfillData.calledOnce).to.be.true;
+				collection._backfillData.restore();
+
+			});
+			it('should call localStorage.getItem for the collection', function () {
+				sinon.spy(collection.io, 'emit');
+				localStorage.setItem('backfill_users', '[{"name" : "Steve"}]');
+				collection._backfillData();
+
+				expect(collection.io.emit.calledOnce).to.be.true;
+				collection.io.emit.restore();
 			});
 		});
 
