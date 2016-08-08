@@ -52,6 +52,41 @@ before(function (done) {
 
 });
 
+describe('localStorage stub', function () {
+	it('should exist', function () {
+		return expect(localStorage).to.be.ok;
+	});
+
+	describe('#setItem', function () {
+		it('should exist', function () {
+			return expect(localStorage.setItem).to.be.ok;
+		});
+		it('should be a function', function () {
+			return expect(localStorage.setItem).to.be.a('function');
+		});
+		it('should write a property to localStorage when called', function () {
+			return expect(localStorage.setItem('highway_test', 'test')).to.be.ok;
+		});
+	});
+
+	describe('#getItem', function () {
+		it('should exist', function () {
+			return expect(localStorage.getItem).to.be.ok;
+		});
+		it('should be a function', function () {
+			return expect(localStorage.getItem).to.be.a('function');
+		});
+		it('should read a property from localStorage', function () {
+			var out = '';
+			out = localStorage.getItem('highway_test');
+			return expect(out).to.equal('test');
+		});
+		it('should return null when a property doesnt exist', function () {
+			return expect(localStorage.getItem('false_item')).to.equal(null);
+		});
+	});
+
+});
 
 describe('Backbone.Highway.Model', function () {
 	it('should exist', function () {
