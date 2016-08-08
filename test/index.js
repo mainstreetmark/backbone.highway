@@ -278,6 +278,12 @@ describe('Backbone.Highway.Model', function () {
 				.to.be.ok;
 			Backbone.Model.prototype.set.restore();
 		});
+		it('should call localStorage.setItem() if the collection is offline', function () {
+			sinon.spy(localStorage, 'setItem');
+			model.set('darth', 'Fake prop');
+			expect(localStorage.setItem.calledOnce).to.be.true;
+			localStorage.setItem.restore();
+		})
 
 	});
 
