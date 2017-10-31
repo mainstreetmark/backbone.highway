@@ -1,55 +1,55 @@
 {
-  "name": "backbone.highway",
-  "version": "1.2.12",
-  "description": "Cruise the highway with backbone!",
-  "main": "lib/backbone.highway.js",
-  "scripts": {
-    "test": "mocha test",
-    "coverage": "mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
-    "publish": ""
-  },
-  "config": {
-    "blanket": {
-      "pattern": [
-        ""
-      ],
-      "data-cover-never": [
-        "node_modules",
-        "test"
-      ]
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/krewenki/backbone.highway.git"
-  },
-  "keywords": [
-    "backbone",
-    "highway"
-  ],
-  "author": "Warren Krewenki",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/krewenki/backbone.highway/issues"
-  },
-  "homepage": "https://github.com/krewenki/backbone.highway#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "babel-core": "^6.9.1",
-    "backbone": "^1.3.3",
-    "blanket": "1.1.9",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
-    "coveralls": "^2.11.9",
-    "expect.js": "^0.3.1",
-    "express": "^4.14.0",
-    "highway.server": "^0.3.0",
-    "jsdom": "8.5.0",
-    "jsdom-global": "1.7.0",
-    "mocha-lcov-reporter": "^1.2.0",
-    "node-localstorage": "^1.3.0",
-    "sinon": "^1.17.4",
-    "socket.io": "^1.4.6",
-    "socket.io-client": "^1.4.6"
-  }
+	"name": "backbone.highway",
+	"version": "1.2.13",
+	"description": "Cruise the highway with backbone!",
+	"main": "lib/backbone.highway.js",
+	"scripts": {
+		"test": "mocha test",
+		"coverage": "mocha --require blanket --reporter mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js",
+		"publish": ""
+	},
+	"config": {
+		"blanket": {
+			"pattern": [
+				""
+			],
+			"data-cover-never": [
+				"node_modules",
+				"test"
+			]
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mainstreetmark/backbone.highway.git"
+	},
+	"keywords": [
+		"backbone",
+		"highway"
+	],
+	"author": "Warren Krewenki",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/krewenki/backbone.highway/issues"
+	},
+	"homepage": "https://github.com/krewenki/backbone.highway#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"babel-core": "^6.9.1",
+		"backbone": "^1.3.3",
+		"blanket": "1.1.9",
+		"chai": "^3.5.0",
+		"chai-as-promised": "^5.3.0",
+		"coveralls": "^2.11.9",
+		"expect.js": "^0.3.1",
+		"express": "^4.14.0",
+		"highway.server": "^0.3.0",
+		"jsdom": "8.5.0",
+		"jsdom-global": "1.7.0",
+		"mocha-lcov-reporter": "^1.2.0",
+		"node-localstorage": "^1.3.0",
+		"sinon": "^1.17.4",
+		"socket.io": "^1.4.6",
+		"socket.io-client": "^1.4.6"
+	}
 }
